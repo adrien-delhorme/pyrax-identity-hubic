@@ -104,10 +104,10 @@ class HubicIdentity(BaseIdentity):
             allow_redirects=False
         )
 
-        if r.status_code == 302 and r.headers['location'].startswith(self._redirect_uri):
+        try:
             query = urlparse.urlsplit(r.headers['location']).query
             code = dict(urlparse.parse_qsl(query))['code']
-        else:
+        except:
             raise exc.AuthenticationFailed("Unable to authorize client_id, invalid login/password ?")
 
         r = requests.post(
