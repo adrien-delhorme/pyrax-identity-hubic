@@ -132,8 +132,7 @@ class HubicIdentity(BaseIdentity):
             except:
                 err = {}
 
-            raise exc.AuthenticationFailed("Unable to get oauth access token, "
-                                           "wrong client_id or client_secret ? (%s)"%str(err))
+            raise exc.AuthenticationFailed("Unable to get oauth access token, wrong client_id or client_secret ? (%s)"%str(err))
 
         oauth_token = r.json()
 
@@ -147,9 +146,8 @@ class HubicIdentity(BaseIdentity):
 
         config = ConfigParser.ConfigParser()
         config.read('.pyrax-hubic.cfg')
-        refresh_token = config.get("hubic", "refresh_token")
 
-        if refresh_token is not None:
+        if config.has_option("hubic", "refresh_token"):
             oauth_token = self._refresh_access_token()
         else:
             r = requests.get(
