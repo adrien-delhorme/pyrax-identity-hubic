@@ -126,13 +126,16 @@ class HubicIdentity(BaseIdentity):
             auth=(self._client_id, self._client_secret)
         )
         if r.status_code != 200:
-            try:
-                err = r.json()
-                err['code'] = r.status_code
-            except:
-                err = {}
+            if r.status_code == 509:
+                raise exc.AuthenticationFailed("status_code = 509: Bandwidth Limit Exceeded")
+            else:
+                try:
+                    err = r.json()
+                    err['code'] = r.status_code
+                except:
+                    err = {}
 
-            raise exc.AuthenticationFailed("Unable to get oauth access token, wrong client_id or client_secret ? (%s)"%str(err))
+                raise exc.AuthenticationFailed("Unable to get oauth access token, wrong client_id or client_secret ? (%s)"%str(err))
 
         oauth_token = r.json()
 
