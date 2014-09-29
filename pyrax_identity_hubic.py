@@ -144,8 +144,6 @@ class HubicIdentity(BaseIdentity):
 
 
     def authenticate(self):
-#        import httplib
-#        httplib.HTTPConnection.debuglevel = 1
 
         config = ConfigParser.ConfigParser()
         config.read('.pyrax-hubic.cfg')
