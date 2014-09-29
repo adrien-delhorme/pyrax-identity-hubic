@@ -108,7 +108,7 @@ class HubicIdentity(BaseIdentity):
         return oauth_token
 
     def _refresh_access_token(self):
-        print "refresh_access_token()"
+        print "_refresh_access_token()"
 
         config = ConfigParser.ConfigParser()
         config.read('.pyrax-hubic.cfg')
