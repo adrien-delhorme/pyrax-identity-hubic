@@ -9,6 +9,7 @@ import requests
 import re
 import urlparse
 import ConfigParser
+import time
 from pyrax.base_identity import BaseIdentity, Service
 from requests.compat import quote, quote_plus
 
@@ -117,25 +118,39 @@ class HubicIdentity(BaseIdentity):
         if refresh_token is None:
             raise exc.AuthenticationFailed("refresh_token is null. Not acquiered before ?")
 
-        r = requests.post(
-            OAUTH_ENDPOINT+'token/',
-            data={
-                'refresh_token': refresh_token,
-                'grant_type': 'refresh_token',
-            },
-            auth=(self._client_id, self._client_secret)
-        )
-        if r.status_code != 200:
-            if r.status_code == 509:
-                raise exc.AuthenticationFailed("status_code = 509: Bandwidth Limit Exceeded")
-            else:
-                try:
-                    err = r.json()
-                    err['code'] = r.status_code
-                except:
-                    err = {}
+        success = False
+        max_retries = 3
+        retries = 0
+        sleep_time = 15
 
-                raise exc.AuthenticationFailed("Unable to get oauth access token, wrong client_id or client_secret ? (%s)"%str(err))
+        while retries < max_retries and not success:
+            r = requests.post(
+                OAUTH_ENDPOINT+'token/',
+                data={
+                    'refresh_token': refresh_token,
+                    'grant_type': 'refresh_token',
+                },
+                auth=(self._client_id, self._client_secret)
+            )
+            if r.status_code != 200:
+                if r.status_code == 509:
+                    print "status_code 509: attempt #", retries, " failed"
+                    retries += 1
+                    time.sleep(sleep_time)
+                    sleep_time = sleep_time * 2
+                else:
+                    try:
+                        err = r.json()
+                        err['code'] = r.status_code
+                    except:
+                        err = {}
+
+                    raise exc.AuthenticationFailed("Unable to get oauth access token, wrong client_id or client_secret ? (%s)"%str(err))
+            else:
+                success = True
+
+        if not success:
+            raise exc.AuthenticationFailed("3 attempts failed to get the refresh token: status_code = 509: Bandwidth Limit Exceeded")
 
         oauth_token = r.json()
 
