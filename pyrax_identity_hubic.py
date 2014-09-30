@@ -212,26 +212,6 @@ class HubicIdentity(BaseIdentity):
             except:
                 raise exc.AuthenticationFailed("Unable to authorize client_id, invalid login/password ?")
 
-           # r = requests.post(
-           #     OAUTH_ENDPOINT+'token/',
-           #     data={
-           #         'code': code,
-           #         'redirect_uri': self._redirect_uri,
-           #         'grant_type': 'authorization_code',
-           #     },
-           #     auth=(self._client_id, self._client_secret)
-           # )
-           # if r.status_code != 200:
-           #     try:
-           #         err = r.json()
-           #         err['code'] = r.status_code
-           #     except:
-           #         err = {}
-
-           #     raise exc.AuthenticationFailed("Unable to get oauth access token, "
-           #                                    "wrong client_id or client_secret ? (%s)"%str(err))
-
-           # oauth_token = r.json()
             oauth_token = self._get_access_token(code)
 
         if oauth_token['token_type'].lower() != 'bearer':
