@@ -89,8 +89,6 @@ class HubicIdentity(BaseIdentity):
         config.read('.pyrax-hubic.cfg')
 
         if oauth_token['access_token'] is not None:
-             print "access_token is:"
-             print oauth_token['access_token']
              config.set("hubic", "access_token", oauth_token['access_token'])
              with open('.pyrax-hubic.cfg', 'wb') as configfile:
                 config.write(configfile)
@@ -98,8 +96,6 @@ class HubicIdentity(BaseIdentity):
              raise exc.AuthenticationFailed("Unable to get oauth access token, wrong client_id or client_secret ? (%s)"%str(err))
 
         if oauth_token['refresh_token'] is not None:
-             print "refresh_token is:"
-             print oauth_token['refresh_token']
              config.set("hubic", "refresh_token", oauth_token['refresh_token'])
              with open('.pyrax-hubic.cfg', 'wb') as configfile:
                 config.write(configfile)
