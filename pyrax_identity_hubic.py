@@ -234,5 +234,6 @@ class HubicIdentity(BaseIdentity):
             ]
         })
         self.username = self.password = None
+        print "Your token will expire on: ", self.expires
 
 
