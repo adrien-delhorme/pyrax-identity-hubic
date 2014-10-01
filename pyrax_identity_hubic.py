@@ -115,9 +115,10 @@ class HubicIdentity(BaseIdentity):
             raise exc.AuthenticationFailed("refresh_token is null. Not acquiered before ?")
 
         success = False
-        max_retries = 3
+        max_retries = 10
         retries = 0
-        sleep_time = 15
+        sleep_time = 30
+        max_sleep_time = 600
 
         while retries < max_retries and not success:
             r = requests.post(
@@ -134,6 +135,8 @@ class HubicIdentity(BaseIdentity):
                     retries += 1
                     time.sleep(sleep_time)
                     sleep_time = sleep_time * 2
+                    if sleep_time > max_sleep_time:
+                        sleep_time = max_sleep_time
                 else:
                     try:
                         err = r.json()
