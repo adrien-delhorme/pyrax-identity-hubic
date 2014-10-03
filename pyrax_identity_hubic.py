@@ -102,6 +102,16 @@ class HubicIdentity(BaseIdentity):
         else:
              raise exc.AuthenticationFailed("Unable to get the refresh token.")
 
+        # removing username and password from .pyrax-hubic.cfg
+        if config.has_option("hubic", "email"):
+            result = config.remove_option("hubic", "email")
+            print result
+            print "username has been removed from the .pyrax-hubic.cfg file sent to the CE."
+        if config.has_option("hubic", "password"):
+            result = config.remove_option("hubic", "password")
+            print result
+            print "password has been removed from the .pyrax-hubic.cfg file sent to the CE."
+
         return oauth_token
 
     def _refresh_access_token(self):
@@ -194,6 +204,9 @@ class HubicIdentity(BaseIdentity):
 
             if not oauth:
                 raise exc.AuthenticationFailed("Unable to get oauth_id from authorization page")
+
+            if self._email is None or  self._password is None:
+                raise exc.AuthenticationFailed("Cannot retrieve email and/or password. Please run expresslane-hubic-setup.sh")
 
             r = requests.post(
                 OAUTH_ENDPOINT+'auth/',
