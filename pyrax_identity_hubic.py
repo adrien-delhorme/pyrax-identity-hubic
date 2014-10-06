@@ -161,7 +161,7 @@ class HubicIdentity(BaseIdentity):
                 success = True
 
         if not success:
-            raise exc.AuthenticationFailed("3 attempts failed to get the refresh token: status_code = 509: Bandwidth Limit Exceeded")
+            raise exc.AuthenticationFailed("All the attempts failed to get the refresh token: status_code = 509: Bandwidth Limit Exceeded")
 
         oauth_token = r.json()
 
