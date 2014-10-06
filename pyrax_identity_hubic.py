@@ -110,7 +110,7 @@ class HubicIdentity(BaseIdentity):
             print "username has been removed from the .pyrax-hubic.cfg file sent to the CE."
         if config.has_option("hubic", "password"):
            config.remove_option("hubic", "password")
-            with open('.pyrax-hubic.cfg', 'wb') as configfile:
+           with open('.pyrax-hubic.cfg', 'wb') as configfile:
                 config.write(configfile)
             print "password has been removed from the .pyrax-hubic.cfg file sent to the CE."
 
