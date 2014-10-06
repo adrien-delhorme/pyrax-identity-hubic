@@ -104,16 +104,14 @@ class HubicIdentity(BaseIdentity):
 
         # removing username and password from .pyrax-hubic.cfg
         if config.has_option("hubic", "email"):
-            result = config.remove_option("hubic", "email")
+            config.remove_option("hubic", "email")
             with open('.pyrax-hubic.cfg', 'wb') as configfile:
                 config.write(configfile)
-            print result
             print "username has been removed from the .pyrax-hubic.cfg file sent to the CE."
         if config.has_option("hubic", "password"):
-            result = config.remove_option("hubic", "password")
+           config.remove_option("hubic", "password")
             with open('.pyrax-hubic.cfg', 'wb') as configfile:
                 config.write(configfile)
-            print result
             print "password has been removed from the .pyrax-hubic.cfg file sent to the CE."
 
         return oauth_token
