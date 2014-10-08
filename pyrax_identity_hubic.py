@@ -117,7 +117,6 @@ class HubicIdentity(BaseIdentity):
         return oauth_token
 
     def _refresh_access_token(self):
-        print "_refresh_access_token()"
 
         config = ConfigParser.ConfigParser()
         config.read('.pyrax-hubic.cfg')
@@ -252,6 +251,5 @@ class HubicIdentity(BaseIdentity):
             ]
         })
         self.username = self.password = None
-        print "Your token will expire on: ", self.expires
 
 
