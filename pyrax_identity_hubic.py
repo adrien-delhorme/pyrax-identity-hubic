@@ -39,6 +39,7 @@ class HubicIdentity(BaseIdentity):
         self._email = email
         self._password = password
         self._client_id = client_id
+        self.tenant_id = client_id
         self._client_secret = client_secret
         self._redirect_uri = redirect_uri
         if authenticate:
@@ -51,6 +52,7 @@ class HubicIdentity(BaseIdentity):
         self._email = cfg.get("hubic", "email")
         self._password = cfg.get("hubic", "password")
         self._client_id = cfg.get("hubic", "client_id")
+        self.tenant_id = self._client_id
         self._client_secret = cfg.get("hubic", "client_secret")
         self._redirect_uri = cfg.get("hubic", "redirect_uri")
 
